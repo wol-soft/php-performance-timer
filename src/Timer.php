@@ -27,11 +27,9 @@ class Timer
         self::$settings = array_merge(self::$settings, $settings);
     }
 
-    public static function start(string $timerKey): void
+    public static function start(string $timerKey, string $namespace = ''): void
     {
-        if (self::$settings['profileNamespace'] === false ||
-            strpos($timerKey, self::$settings['profileNamespace']) !== 0
-        ) {
+        if (!self::checkSkipTimer($namespace)) {
             return;
         }
 
@@ -43,11 +41,9 @@ class Timer
         self::$runningTimers[$timerKey] = microtime(true);
     }
 
-    public static function end(string $timerKey): void
+    public static function end(string $timerKey, string $namespace = ''): void
     {
-        if (self::$settings['profileNamespace'] === false ||
-            strpos($timerKey, self::$settings['profileNamespace']) !== 0
-        ) {
+        if (!self::checkSkipTimer($namespace)) {
             return;
         }
 
@@ -87,6 +83,15 @@ class Timer
 
         self::$settings['outputHandler']->handle(self::$results);
         self::$results = [];
+    }
+
+    private static function checkSkipTimer(string $namespace): bool
+    {
+        return self::$settings['profileNamespace'] === false || (
+            $namespace &&
+            self::$settings['profileNamespace'] &&
+            strpos($namespace, self::$settings['profileNamespace']) !== 0
+        );
     }
 
     private static function throw(Exception $exception): void
