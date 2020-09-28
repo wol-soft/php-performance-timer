@@ -1,0 +1,21 @@
+{
+  "name": "wol-soft/php-performance-timer",
+  "homepage": "https://github.com/wol-soft/php-performance-timer",
+  "description": "Provides functions to collect processing times inside your application",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Enno Woortmann",
+      "email": "enno.woortmann@web.de"
+    }
+  ],
+  "require": {
+    "php": ">=7.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "PerformanceTimer\\": "src"
+    }
+  }
+}
