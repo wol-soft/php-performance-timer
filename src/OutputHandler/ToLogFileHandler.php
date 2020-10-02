@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PerformanceTimer\OutputHandler;
 
 class ToLogFileHandler implements OutputHandlerInterface
@@ -13,7 +15,7 @@ class ToLogFileHandler implements OutputHandlerInterface
         $this->fileAmount = $fileAmount;
     }
 
-    public function handle(array $results): void
+    public function handle(array $results)
     {
         if ($this->fileAmount > 1) {
             $this->file .= rand(1, $this->fileAmount);
@@ -23,13 +25,18 @@ class ToLogFileHandler implements OutputHandlerInterface
         foreach ($results as $timerKey => $timerResults) {
             $output .= array_reduce(
                 $timerResults,
-                static function (string $carry, float $time) use ($timerKey) {
-                    return $carry . $timerKey . ',' . number_format(1000 * $time, 4) . PHP_EOL;
+                static function (string $carry, array $result) use ($timerKey) {
+                    return $carry . join(
+                        ',',
+                        array_merge([$timerKey, number_format(1000 * array_shift($result), 4)], $result)
+                    ) . PHP_EOL;
                 },
                 ''
             );
         }
 
-        file_put_contents($this->file, $output, FILE_APPEND);
+        file_put_contents($this->file, trim($output), FILE_APPEND);
+
+        return trim($output);
     }
 }

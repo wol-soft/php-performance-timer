@@ -6,5 +6,5 @@ namespace PerformanceTimer\OutputHandler;
 
 interface OutputHandlerInterface
 {
-    public function handle(array $results): void;
+    public function handle(array $results);
 }

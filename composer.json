@@ -13,9 +13,17 @@
   "require": {
     "php": ">=7.1"
   },
+  "require-dev": {
+    "phpunit/phpunit": "^8.5"
+  },
   "autoload": {
     "psr-4": {
       "PerformanceTimer\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "PerformanceTimer\\Tests\\": "tests"
     }
   }
 }
