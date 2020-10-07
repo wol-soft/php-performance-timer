@@ -15,7 +15,7 @@ class TimerPluginTest extends TestCase
         $this->expectException(UnfinishedTimerException::class);
         Timer::start('test-timer');
 
-        $this->addPlugin();
+        $this->addTimestampPlugin();
     }
 
     public function testAddPlugin(): void
@@ -23,7 +23,15 @@ class TimerPluginTest extends TestCase
         Timer::end('test-timer');
         Timer::handleResults();
 
-        $this->assertTrue($this->addPlugin());
+        $this->assertTrue($this->addTimestampPlugin());
+        $this->assertTrue(Timer::addTimerPlugin(
+            function () {
+                return;
+            },
+            function () {
+                return 'Hello';
+            }
+        ));
     }
 
     public function testPluginOutput(): void
@@ -32,17 +40,18 @@ class TimerPluginTest extends TestCase
         usleep(100);
         Timer::end('plugin-timer');
 
-        [$key, $duration, $startTime, $endTime] = explode(',', $result = Timer::handleResults());
+        [$key, $duration, $startTime, $endTime, $constValue] = explode(',', $result = Timer::handleResults());
 
         $this->assertSame('plugin-timer', $key);
         $this->assertIsNumeric($duration);
         $this->assertIsNumeric($startTime);
         $this->assertIsNumeric($endTime);
+        $this->assertSame('Hello', $constValue);
 
         $this->assertGreaterThan((float) $startTime, (float) $endTime);
     }
 
-    protected function addPlugin(): bool
+    protected function addTimestampPlugin(): bool
     {
         return Timer::addTimerPlugin(
             function () {

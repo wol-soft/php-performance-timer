@@ -83,7 +83,7 @@ class Timer
         $result = [microtime(true) - self::$runningTimers[$timerKey][0]];
 
         foreach (self::$plugins as $index => [, $endCallback]) {
-            array_push($result, ...$endCallback(self::$runningTimers[$timerKey][$index]));
+            array_push($result, ...(array)$endCallback(self::$runningTimers[$timerKey][$index]));
         }
 
         self::$results[$timerKey][] = $result;
