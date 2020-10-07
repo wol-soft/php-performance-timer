@@ -73,7 +73,7 @@ Only the timers with namespaces starting with the configured namespace are execu
 By default the timer execution may throw exceptions (eg. if a timer is started twice). If you don't want the timer to break your execution flow you can set the option `throwExceptions` to false. In this case the timer will simply ignore invalid calls.
 
 ```php
-Timer::initSettings(['throwExceptions' => 'component.booking']);
+Timer::initSettings(['throwExceptions' => false]);
 ```
 
 ### Custom data collection
