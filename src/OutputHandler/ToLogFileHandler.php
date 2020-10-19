@@ -35,7 +35,7 @@ class ToLogFileHandler implements OutputHandlerInterface
             );
         }
 
-        file_put_contents($this->file, trim($output), FILE_APPEND);
+        file_put_contents($this->file, trim($output) . PHP_EOL, FILE_APPEND);
 
         return trim($output);
     }
